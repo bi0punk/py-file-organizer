@@ -1,5 +1,8 @@
 import os
 import shutil
+from time import sleep
+from progressbar import progressbar
+
 
 # Directorio a organizar
 dir_path = "/home/sysbot/Descargas/"
@@ -19,4 +22,8 @@ for file_name in os.listdir(dir_path):
 
     # Mover el archivo al directorio correspondiente
     shutil.move(os.path.join(dir_path, file_name), os.path.join(dirs[extension], file_name))
+
+
+for i in progressbar(range(100)):
+    sleep(0.02)
 print("Archivos organizados con éxito.")
