@@ -2,7 +2,7 @@ import os
 import shutil
 
 # Directorio a organizar
-disorder_directory_files = "/you/route"
+disorder_directory_files = "/home/sysbot/Descargas"
 
 # Crear un diccionario vacío para almacenar los directorios
 extension_dirs = {}
