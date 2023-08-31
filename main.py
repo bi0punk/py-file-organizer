@@ -14,7 +14,14 @@ for file_name in os.listdir(disorder_directory_files):
         extension = os.path.splitext(file_name)[1]
         # Si la extensión no está en el diccionario, crear un nuevo directorio para ella
         if extension:
-            target_dir = os.path.join(disorder_directory_files, extension[1:])
+            # Contabilizar la extensión en el diccionario
+            extension = extension[1:]  # Eliminar el punto inicial de la extensión
+            if extension in extension_dirs:
+                extension_dirs[extension] += 1
+            else:
+                extension_dirs[extension] = 1
+            
+            target_dir = os.path.join(disorder_directory_files, extension)
             if not os.path.exists(target_dir):
                 os.makedirs(target_dir)
             
@@ -32,4 +39,8 @@ for file_name in os.listdir(disorder_directory_files):
     except Exception as e:
         print(f"Error al organizar el archivo '{file_name}': {str(e)}")
 
+# Mostrar la cantidad de archivos por extensión
 print("Archivos organizados con éxito.")
+print("Cantidad de archivos por extensión:")
+for ext, count in extension_dirs.items():
+    print(f"{ext}: {count} archivo(s)")
