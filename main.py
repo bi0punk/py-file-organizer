@@ -1,13 +1,9 @@
 import os
 import shutil
 
-# Directorio a organizar
+
 disorder_directory_files = "/home/sysbot/Descargas"
-
-# Crear un diccionario vacío para almacenar los directorios
 extension_dirs = {}
-
-# Recorrer todos los archivos en el directorio
 for file_name in os.listdir(disorder_directory_files):
     try:
         # Obtener la extensión del archivo
@@ -20,16 +16,13 @@ for file_name in os.listdir(disorder_directory_files):
                 extension_dirs[extension] += 1
             else:
                 extension_dirs[extension] = 1
-            
             target_dir = os.path.join(disorder_directory_files, extension)
             if not os.path.exists(target_dir):
                 os.makedirs(target_dir)
-            
             # Ruta completa del archivo en el directorio de origen
             source_file_path = os.path.join(disorder_directory_files, file_name)
             # Ruta completa del archivo en el directorio de destino
             target_file_path = os.path.join(target_dir, file_name)
-            
             # Verificar si el archivo ya existe en el directorio de destino
             if os.path.exists(target_file_path):
                 print(f"El archivo '{file_name}' ya existe en el directorio de destino.")
@@ -38,9 +31,9 @@ for file_name in os.listdir(disorder_directory_files):
                 shutil.move(source_file_path, target_file_path)
     except Exception as e:
         print(f"Error al organizar el archivo '{file_name}': {str(e)}")
-
 # Mostrar la cantidad de archivos por extensión
 print("Archivos organizados con éxito.")
+print("")
 print("Cantidad de archivos por extensión:")
 for ext, count in extension_dirs.items():
     print(f"{ext}: {count} archivo(s)")
