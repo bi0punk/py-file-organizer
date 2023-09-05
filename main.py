@@ -2,7 +2,7 @@ import os
 import shutil
 
 
-disorder_directory_files = "/home/sysbot/Descargas"
+disorder_directory_files = "/you/folder/organizer"
 extension_dirs = {}
 for file_name in os.listdir(disorder_directory_files):
     try:
