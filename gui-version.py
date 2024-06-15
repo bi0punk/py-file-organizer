@@ -8,11 +8,8 @@ def organize_files(directory):
         extension_dirs = {}
         for file_name in os.listdir(directory):
             try:
-                # Obtener la extensión del archivo
                 extension = os.path.splitext(file_name)[1]
-                # Si la extensión no está en el diccionario, crear un nuevo directorio para ella
                 if extension:
-                    # Contabilizar la extensión en el diccionario
                     extension = extension[1:]  # Eliminar el punto inicial de la extensión
                     if extension in extension_dirs:
                         extension_dirs[extension] += 1
@@ -21,11 +18,8 @@ def organize_files(directory):
                     target_dir = os.path.join(directory, extension)
                     if not os.path.exists(target_dir):
                         os.makedirs(target_dir)
-                    # Ruta completa del archivo en el directorio de origen
                     source_file_path = os.path.join(directory, file_name)
-                    # Ruta completa del archivo en el directorio de destino
                     target_file_path = os.path.join(target_dir, file_name)
-                    # Verificar si el archivo ya existe en el directorio de destino
                     if os.path.exists(target_file_path):
                         print(f"El archivo '{file_name}' ya existe en el directorio de destino.")
                     else:
