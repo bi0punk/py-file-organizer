@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 def organizar_por_extension(
-    base_dir: str = "/home/user/Descargas",
+    base_dir: str = "/home/drbash/Descargas",
     verbose: bool = True,
 ) -> dict[str, int]:
 
@@ -89,7 +89,7 @@ def imprimir_resumen(extension_dirs: dict[str, int]) -> None:
 
 if __name__ == "__main__":
     # Puedes cambiar la ruta aquí o incluso leerla de una variable de entorno si quieres
-    DIR_DESCARGAS = "/home/user/Descargas"
+    DIR_DESCARGAS = "/home/drbash/Descargas"
 
     resumen = organizar_por_extension(DIR_DESCARGAS, verbose=True)
     imprimir_resumen(resumen)
