@@ -62,7 +62,7 @@ py-file-organizer/
 ## Instalación
 
 ```bash
-git clone https://github.com/tu-usuario/py-file-organizer.git
+git clone https://github.com/bi0punk/py-file-organizer.git
 cd py-file-organizer
 # Sin dependencias externas
 ```
