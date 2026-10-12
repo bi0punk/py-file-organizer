@@ -1,40 +1,67 @@
-# Py File Organizer
+# py-file-organizer
 
 Organizador de archivos que mueve archivos a subdirectorios según su extensión. Versiones CLI y GUI disponibles.
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.11+-blue)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-blue)](https://python.org)
 
-## Tabla de Contenidos
+## Contenido
 
 - [Características](#características)
+- [Arquitectura](#arquitectura)
 - [Stack](#stack)
-- [Estructura](#estructura)
-- [Requisitos](#requisitos)
+- [Estructura del repositorio](#estructura-del-repositorio)
 - [Instalación](#instalación)
 - [Uso](#uso)
-- [Tests](#tests)
 - [Configuración](#configuración)
-- [CI](#ci)
-- [Limitaciones / Roadmap](#limitaciones--roadmap)
+- [Tests / CI](#tests--ci)
+- [Roadmap](#roadmap)
 - [Licencia](#licencia)
 
 ## Características
 
-- **Versión CLI** (`console/main.py`): organiza archivos desde terminal
-- **Versión GUI** (`gui/gui-version.py`): interfaz gráfica con Tkinter para seleccionar directorio
-- Agrupa archivos en carpetas nombradas según su extensión (`.pdf` → `pdf/`, `.jpg` → `jpg/`)
-- Manejo seguro de duplicados (no sobrescribe archivos existentes)
-- Reporte detallado de archivos movidos por extensión
-- Sin dependencias externas — solo standard library
+- **Versión CLI** (`console/main.py`): organiza archivos desde terminal.
+- **Versión GUI** (`gui/gui-version.py`): interfaz gráfica con Tkinter para seleccionar directorio.
+- Agrupa archivos en carpetas nombradas según su extensión (`.pdf` → `pdf/`, `.jpg` → `jpg/`).
+- Manejo seguro de duplicados (no sobrescribe archivos existentes).
+- Reporte detallado de archivos movidos por extensión.
+- Sin dependencias externas — solo standard library.
+
+## Arquitectura
+
+```mermaid
+flowchart TD
+  subgraph CLI
+    A[console/main.py] --> B[organizar_por_extension]
+    A --> C[imprimir_resumen]
+  end
+  subgraph GUI
+    D[gui/gui-version.py] --> E[Selector de directorio Tkinter]
+    E --> B
+  end
+
+  B --> F[os.scandir base_dir]
+  F --> G{entry.is_file?}
+  G -->|No| F
+  G -->|Sí| H[Path.suffix]
+  H --> I{Sin extensión?}
+  I -->|Sí| F
+  I -->|No| J[target_dir = base/extension]
+  J --> K{archivo ya existe?}
+  K -->|Sí| L[Aviso: no se mueve]
+  K -->|No| M[shutil.move]
+  M --> N[contador por extensión]
+  L --> N
+  N --> C
+```
 
 ## Stack
 
-- **Python 3.11+** (standard library: `os`, `shutil`, `pathlib`, `tkinter`)
+- Python 3.11+ (standard library: `os`, `shutil`, `pathlib`, `tkinter`)
 - GUI: Tkinter (incluido en Python)
 - Linting: Ruff | Tests: pytest
 
-## Estructura
+## Estructura del repositorio
 
 ```
 py-file-organizer/
@@ -44,22 +71,17 @@ py-file-organizer/
 │   └── gui-version.py      # Versión con interfaz gráfica
 ├── tests/
 │   └── test_smoke.py       # Tests de humo
-├── pyproject.toml           # Configuración del proyecto
-├── requirements.txt         # Dependencias (vacío, sin externas)
-├── .env.example             # Variables de entorno placeholder
-├── .github/
-│   └── workflows/
-│       └── ci.yml           # CI: Ruff + pytest
+├── pyproject.toml          # Configuración del proyecto
+├── requirements.txt        # Dependencias
+├── .env.example            # Variables de entorno placeholder
+├── .github/workflows/ci.yml  # CI: Ruff + pytest
 ├── LICENSE
 └── README.md
 ```
 
-## Requisitos
-
-- Python >= 3.11
-- Para la GUI: Tkinter (incluido en la mayoría de distribuciones; en Ubuntu/Debian: `sudo apt install python3-tk`)
-
 ## Instalación
+
+Requisitos: Python >= 3.11. Para la GUI, Tkinter (en Ubuntu/Debian: `sudo apt install python3-tk`).
 
 ```bash
 git clone https://github.com/bi0punk/py-file-organizer.git
@@ -104,20 +126,18 @@ python gui/gui-version.py
 
 Se abre una ventana. Haz clic en "Seleccionar Directorio", elige la carpeta y el programa organiza los archivos automáticamente.
 
-## Tests
+## Configuración
+
+No requiere variables de entorno. Modifica `DIR_DESCARGAS` en `console/main.py` para cambiar el directorio objetivo.
+
+## Tests / CI
 
 ```bash
 pip install pytest
 python -m pytest tests/ -v
 ```
 
-## Configuración
-
-No requiere variables de entorno. Modifica `DIR_DESCARGAS` en `console/main.py` para cambiar el directorio objetivo.
-
-## CI
-
-GitHub Actions ejecuta Ruff linting y pytest en cada push y pull request:
+El workflow `.github/workflows/ci.yml` ejecuta Ruff linting y pytest en cada push y pull request:
 
 ```yaml
 - name: Ruff check
@@ -126,12 +146,14 @@ GitHub Actions ejecuta Ruff linting y pytest en cada push y pull request:
   run: uv run pytest -q
 ```
 
-## Limitaciones / Roadmap
+## Roadmap
 
-- No organiza archivos sin extensión
-- CLI requiere editar el script para cambiar el directorio objetivo
-- No soporta filtros por tipo de archivo ni expresiones regulares
-- Futuro: argumento CLI `--path`, modo dry-run, deshacer operación, soporte para directorios anidados
+- [x] Versión CLI y versión GUI (Tkinter)
+- [x] Agrupación por extensión y manejo seguro de duplicados
+- [ ] No organiza archivos sin extensión
+- [ ] CLI requiere editar el script para cambiar el directorio objetivo
+- [ ] No soporta filtros por tipo de archivo ni expresiones regulares
+- [ ] Argumento CLI `--path`, modo dry-run, deshacer operación, directorios anidados
 
 ## Licencia
 
