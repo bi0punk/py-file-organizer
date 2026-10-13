@@ -1,8 +1,9 @@
+import contextlib
 import os
 import shutil
-from pathlib import Path
-from collections import defaultdict
 import tkinter as tk
+from collections import defaultdict
+from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
 
 
@@ -123,10 +124,8 @@ def create_gui():
     root.geometry(f"{width}x{height}+{x}+{y}")
 
     # Estilo básico con ttk
-    try:
+    with contextlib.suppress(Exception):
         ttk.Style().theme_use("clam")
-    except Exception:
-        pass
 
     frame = ttk.Frame(root, padding=20)
     frame.pack(expand=True, fill="both")
@@ -137,9 +136,7 @@ def create_gui():
     status_var = tk.StringVar(value="Listo.")
 
     select_button = ttk.Button(
-        frame,
-        text="Seleccionar Directorio",
-        command=lambda: select_directory(root, status_var)
+        frame, text="Seleccionar Directorio", command=lambda: select_directory(root, status_var)
     )
     select_button.pack(pady=10)
 
